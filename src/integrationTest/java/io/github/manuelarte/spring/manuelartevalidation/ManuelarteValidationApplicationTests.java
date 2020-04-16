@@ -8,14 +8,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.github.manuelarte.spring.manuelartevalidation.ManuelarteValidationApplicationTests.ParentDocumentController;
+import io.github.manuelarte.spring.manuelartevalidation.ManuelarteValidationApplicationTests.ParentRepository;
 import io.github.manuelarte.spring.manuelartevalidation.constraints.Exists;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import javax.validation.ConstraintViolationException;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
@@ -30,6 +31,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,10 +46,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.util.NestedServletException;
 
 @SpringBootTest(classes = ManuelarteValidationApplicationTests.class)
-@Import(ParentDocumentController.class)
+@ContextConfiguration(classes = ManuelarteValidationApplicationTests.class)
+@Import( { ParentRepository.class, ParentDocumentController.class} )
 @EnableWebMvc
 @AutoConfigureMockMvc
 @EnableAutoConfiguration
+@EnableMongoRepositories
 class ManuelarteValidationApplicationTests {
 
 	@Autowired
@@ -61,15 +68,16 @@ class ManuelarteValidationApplicationTests {
 	@Test
 	void testExistWithOneId() throws Exception {
 		final ParentDocument saved = mongoTemplate.save(new ParentDocument());
-		mvc.perform(get("/api/parents/{id}", saved.id.toString())
+		mvc.perform(get("/api/parents/{id}", saved.id)
 				.contentType(APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("id").value(saved.id.toString()));
+				.andExpect(jsonPath("id").value(saved.id));
 	}
 
 	@Test
 	void testExistWithNotExisting() {
-		final NestedServletException e = assertThrows(NestedServletException.class, () -> mvc.perform(get("/api/parents/{id}", new ObjectId().toString())
+		final NestedServletException e = assertThrows(NestedServletException.class,
+				() -> mvc.perform(get("/api/parents/{id}", new ObjectId().toString())
 				.contentType(APPLICATION_JSON))
 				.andExpect(status().isBadRequest()));
 		assertEquals(ConstraintViolationException.class, e.getCause().getClass());
@@ -88,11 +96,11 @@ class ManuelarteValidationApplicationTests {
 	}
 
 	@Test
-	void testExistWithSeveralIdsOneNotExisting() throws Exception {
+	void testExistWithSeveralIdsOneNotExisting() {
 		final ParentDocument saved = mongoTemplate.save(new ParentDocument());
 		final ParentDocument saved2 = new ParentDocument();
-		saved2.id = new ObjectId();
-		final String ids = Arrays.asList(saved, saved2).stream().map(it -> it.id.toString())
+		saved2.id = new ObjectId().toString();
+		final String ids = Arrays.asList(saved, saved2).stream().map(it -> it.id)
 				.collect(Collectors.joining(", "));
 		final Exception e = assertThrows(NestedServletException.class,
 				() -> mvc.perform(get("/api/parents?ids={ids}", ids)
@@ -119,7 +127,72 @@ class ManuelarteValidationApplicationTests {
 
 		@GetMapping("/{id}")
 		public ParentDocument findOne(@PathVariable @Exists(ParentDocument.class) final String id) {
-			return mongoTemplate.findById(new ObjectId(id), ParentDocument.class);
+			return mongoTemplate.findById(id, ParentDocument.class);
+		}
+	}
+
+	@Component
+	public static class ParentRepository implements CrudRepository<ParentDocument, String>{
+
+		@Autowired
+		private MongoTemplate mongoTemplate;
+
+		@Override
+		public <S extends ParentDocument> S save(S entity) {
+			return mongoTemplate.save(entity);
+		}
+
+		@Override
+		public <S extends ParentDocument> Iterable<S> saveAll(Iterable<S> entities) {
+			return null;
+		}
+
+		@Override
+		public Optional<ParentDocument> findById(String id) {
+			return Optional.ofNullable(mongoTemplate.findById(id, ParentDocument.class));
+		}
+
+		@Override
+		public boolean existsById(String id) {
+			return findById(id).isPresent();
+		}
+
+		@Override
+		public Iterable<ParentDocument> findAll() {
+			return mongoTemplate.findAll(ParentDocument.class);
+		}
+
+		@Override
+		public Iterable<ParentDocument> findAllById(final Iterable<String> ids) {
+			final List<String> listIds = StreamSupport.stream(
+					ids.spliterator(), false).collect(Collectors.toList());
+			return mongoTemplate.find(
+					new Query(Criteria.where("_id").in(listIds.toArray(new String[listIds.size()]))),
+					ParentDocument.class);
+		}
+
+		@Override
+		public long count() {
+			return StreamSupport.stream(findAll().spliterator(), false).count();
+		}
+
+		@Override
+		public void deleteById(String aLong) {
+		}
+
+		@Override
+		public void delete(ParentDocument entity) {
+
+		}
+
+		@Override
+		public void deleteAll(Iterable<? extends ParentDocument> entities) {
+
+		}
+
+		@Override
+		public void deleteAll() {
+
 		}
 	}
 
@@ -127,8 +200,11 @@ class ManuelarteValidationApplicationTests {
 	public static class ParentDocument {
 
 		@Id
-		@JsonSerialize(using = ToStringSerializer.class)
-		private ObjectId id;
+		private String id;
+
+		public String getId() {
+			return id;
+		}
 
 		@Override
 		public boolean equals(Object o) {

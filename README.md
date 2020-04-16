@@ -18,17 +18,18 @@ implementation 'org.manuel.spring:manuelarte-validation:{latest-version}'
 # Prerequisites
 
 - Java8 or above
-- Spring Data MongoDB
+- Spring Data
 
 # Features
 
 ## Exists Constraint
 
-This constraint can be used to check in a controller if the document exists before executing the method
+This constraint can be used to check in a controller if the entity exists before executing the method
 
 ### Prerequisites
 
 - The constraint validations need to be executed, for example annotating your Controller with @Validated
+- The entity/document that is going to be checked needs to have a Repository.
 
 ### Example
 
@@ -42,4 +43,7 @@ public class DocumentController {
         return ResponseEntity.ok(documentService.findOne(id));
     }
 }
+
+@Repository
+public interface DocumentEntityRepository extends CrudRepository<DocumentEntity, Long> {}
 ```

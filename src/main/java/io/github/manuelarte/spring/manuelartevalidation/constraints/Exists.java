@@ -16,12 +16,12 @@ import javax.validation.Payload;
 public @interface Exists {
 
   /**
-   * The document class to check if it exists.
-   * @return the document that is going to be checked in the repository.
+   * The entity class to check if it exists. It needs to have a Repository interface also.
+   * @return the entity that is going to be checked in the repository.
    */
   Class<?> value();
 
-  String message() default "Document not found";
+  String message() default "Entity not found";
 
   Class<?>[] groups() default {};
 
