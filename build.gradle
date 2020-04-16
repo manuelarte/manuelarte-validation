@@ -1,0 +1,112 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+	}
+}
+
+plugins {
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+	id "nebula.facet" version "7.0.8"
+	id 'com.palantir.git-version' version '0.12.3'
+	id 'maven-publish'
+	id 'signing'
+	id 'io.codearte.nexus-staging' version '0.21.2'
+}
+
+apply plugin: 'com.bmuschko.nexus'
+
+group = 'io.github.manuelarte.spring'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+facets {
+	integrationTest {
+		parentSourceSet = 'main'
+		testTaskName = 'integrationTest'
+		includeInCheckLifecycle = true
+	}
+}
+
+dependencies {
+	implementation 'javax.validation:validation-api:2.0.1.Final'
+	compileOnly 'org.springframework.boot:spring-boot-starter:2.2.6.RELEASE'
+	compileOnly 'org.springframework.boot:spring-boot-starter-data-mongodb:2.2.6.RELEASE'
+
+	integrationTestImplementation('org.springframework.boot:spring-boot-starter-test:2.2.6.RELEASE') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	integrationTestImplementation 'org.springframework.boot:spring-boot-starter:2.2.6.RELEASE'
+	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-web:2.2.6.RELEASE'
+	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.2.6.RELEASE'
+	integrationTestImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.0'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+integrationTest {
+	useJUnitPlatform()
+}
+
+jar {
+	enabled = true
+}
+
+modifyPom {
+	project {
+		name rootProject.name
+		description 'Useful constraints.'
+		url 'https://github.com/manuelarte/manuelarte-validation'
+		inceptionYear '2020'
+
+		scm {
+			url 'https://github.com/manuelarte/manuelarte-validation'
+			connection 'scm:https://github.com/manuelarte/manuelarte-validation.git'
+			developerConnection 'scm:https://github.com/manuelarte/manuelarte-validation.git'
+		}
+
+		licenses {
+			license {
+				name 'The Apache Software License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+				distribution 'repo'
+			}
+		}
+
+		developers {
+			developer {
+				id 'manuelarte'
+				name 'Manuel Doncel Martos'
+				email 'manueldoncelmartos@gmail.com'
+			}
+		}
+	}
+}
+
+extraArchive {
+	sources = true
+	tests = false
+	javadoc = true
+}
+
+nexus {
+	sign = true
+	repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+	snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+}
+
+nexusStaging {
+	packageGroup = "io.github.manuelarte.spring" //optional if packageGroup == project.getGroup()
+	// stagingProfileId = "yourStagingProfileId" //when not defined will be got from server using "packageGroup"
+}
