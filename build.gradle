@@ -20,7 +20,7 @@ plugins {
 apply plugin: 'com.bmuschko.nexus'
 
 group = 'io.github.manuelarte.spring'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '1.8'
 
 repositories {
