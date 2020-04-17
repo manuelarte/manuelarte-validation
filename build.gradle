@@ -39,8 +39,22 @@ facets {
 
 dependencies {
 	implementation 'javax.validation:validation-api:2.0.1.Final'
+
 	compileOnly 'org.springframework.boot:spring-boot-starter:2.2.6.RELEASE'
 	compileOnly 'org.springframework.boot:spring-boot-starter-data-mongodb:2.2.6.RELEASE'
+	compileOnly 'org.projectlombok:lombok:1.18.2'
+	annotationProcessor 'org.projectlombok:lombok:1.18.2'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter:2.2.6.RELEASE'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.2.6.RELEASE'
+	testImplementation 'org.json:json:20190722'
+	testImplementation 'org.mockito:mockito-junit-jupiter:3.3.3'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+	testImplementation 'org.mockito:mockito-core:3.3.3'
+	testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.1.13'
+	testCompileOnly 'org.projectlombok:lombok:1.18.2'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.2'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 
 	integrationTestImplementation('org.springframework.boot:spring-boot-starter-test:2.2.6.RELEASE') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

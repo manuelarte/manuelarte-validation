@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added Exists constraint
 - Added New, Update, PartialUpdate constraint groups
+- Added Crpud repository, that allows partial updates
 
 ### Changed
 

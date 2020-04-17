@@ -14,14 +14,12 @@ import org.springframework.util.Assert;
 
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@lombok.RequiredArgsConstructor
 public class ExistsValidator implements ConstraintValidator<Exists, Object> {
 
+  @lombok.NonNull
   private final List<CrudRepository> repositories;
   private CrudRepository repository;
-
-  public ExistsValidator(final List<CrudRepository> repositories) {
-    this.repositories = repositories;
-  }
 
   @Override
   public void initialize(final Exists exists) {
