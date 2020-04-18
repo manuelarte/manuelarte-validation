@@ -14,9 +14,9 @@ Manuel Doncel Martos <https://github.com/manuelarte[@manuelarte]>
 :url-ci-appveyor: https://ci.appveyor.com/project/asciidoctor/jekyll-asciidoc
 
 ifdef::status[]
-// image:https://img.shields.io/gem/v/jekyll-asciidoc.svg[Latest Release, link={url-gem}]
+// image:https://img.shields.io/gem/v/jekyll-asciidoc.svg[Latest Release, link={url-maven}]
 image:https://img.shields.io/badge/license-MIT-blue.svg[MIT License, link=#copyright-and-license]
-image:https://circleci.com/gh/manuelarte/manuelarte-validation.svg?style=shield [Build status (Circle CI), link={urc-ci-circleci}]
+image:https://circleci.com/gh/manuelarte/manuelarte-validation.svg?style=shield[Build status (Circle CI), link={urc-ci-circleci}]
 image:https://img.shields.io/badge/version-{latest-version}-blue[Release version]
 endif::[]
 
