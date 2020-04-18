@@ -1,41 +1,60 @@
-# Table of Contents
-1. [Introduction](#introduction)
-2. [Installation](#installation)
-3. [Prerequisites](#prerequisites)
-4. [Features](#features)
+= Manuelarte Validation library
+Manuel Doncel Martos <https://github.com/manuelarte[@manuelarte]>
+// Settings:
+:latest-version: 0.0.1
+:status:
 
-# Introduction
+:url-repo: https://github.com/manuelarte/manuelarte-validation
+:url-issues: {url-repo}/issues
+:url-search-issues: {url-repo}/search?type=Issues
 
-Some helpful validations to be used in your Spring application
 
-# Installation
+
+:url-ci-circleci: https://circleci.com/gh/manuelarte/manuelarte-validation
+:url-ci-appveyor: https://ci.appveyor.com/project/asciidoctor/jekyll-asciidoc
+
+ifdef::status[]
+// image:https://img.shields.io/gem/v/jekyll-asciidoc.svg[Latest Release, link={url-gem}]
+image:https://img.shields.io/badge/license-MIT-blue.svg[MIT License, link=#copyright-and-license]
+image:https://circleci.com/gh/manuelarte/manuelarte-validation.svg?style=shield [Build status (Circle CI), link={urc-ci-circleci}]
+image:https://img.shields.io/badge/version-{latest-version}-blue[Release version]
+endif::[]
+
+:toc: []
+
+== Overview
+
+Some helpful validations and utilities to be used in your Spring Boot application. Check the features list below.
+
+== Installation
 
 Add the following dependency in your project to start using the features described below.
 
-```bash
-implementation 'org.manuel.spring:manuelarte-validation:{latest-version}'
-```
+[source,bash]
+----
+implementation 'org.manuel.spring:manuelarte-validation:{latest-version}
+----
 
-# Prerequisites
+== Prerequisites
 
-- Java8 or above
+- Java 8 or above
 - Spring Data
 
-# Features
+== Features
 
-## Exists Constraint
+=== Exists Constraint
 
 This constraint can be used to check in a controller if the entity exists before executing the method
 
-### Prerequisites
+==== Prerequisites
 
 - The constraint validations need to be executed, for example annotating your Controller with @Validated
 - The entity/document that is going to be checked needs to have a Repository.
 
-### Example
+==== Example
 
-```java
-...
+[source,java]
+----
 @Validated
 public class DocumentController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,19 +66,20 @@ public class DocumentController {
 
 @Repository
 public interface DocumentEntityRepository extends CrudRepository<DocumentEntity, Long> {}
-```
+----
 
-## Validation Groups
+=== Validation Groups
 
 There are three groups added to be used in your dtos, New, Update, PartialUpdate, that can be used
 as validation groups.
 
-### Example
+==== Example
 
 Imagine that you have an entity that you want to allow to be created, updated and partially updated.
 By using validation groups, we can have the same dto for the different endpoints. Here is an example:
 
-```java
+[source,java]
+----
 public class OneEntityDto {
 
     @Null(groups = {New.class, PartialUpdate.class})
@@ -70,10 +90,9 @@ public class OneEntityDto {
     private final String firstName;
     @NotEmpty(groups = {New.class, Update.class})
     private final String lastName;
-    ...
+
 }
 
-...
 @Validated
 public class OneEntityController {
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -82,14 +101,14 @@ public class OneEntityController {
         return ResponseEntity.ok(entityService.save(newEntity));
     }
 }
-```
+----
 
 As you can see, when posting new entities, the validation groups default and new will apply.
 
-## CrupRepository
+=== CrupRepository
 
 Extension for the Spring Data Repository to allow partial updates.
 
-### Prerequisites
+==== Prerequisites
 
 - The entity needs to have a single field with @Id attribute
