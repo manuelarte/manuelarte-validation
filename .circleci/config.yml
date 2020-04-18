@@ -47,3 +47,9 @@ jobs:
               echo -e "nexusPassword=$nexusPassword" > gradle.properties
               ./gradlew clean build uploadArchives -PnexusUsername=$nexusUsername
             fi
+
+workflows:
+  main:
+    jobs:
+      - build:
+          context: SonarCloud
