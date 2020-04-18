@@ -11,7 +11,9 @@ import org.mockito.stubbing.Answer;
 
 public class CrpudRepositoryTest {
 
+  @SuppressWarnings("unchecked")
   private final CrpudRepository<ParentEntity, Long> parentRepository = spy(CrpudRepository.class);
+  @SuppressWarnings("unchecked")
   private final CrpudRepository<ChildEntity, Long> childRepository = spy(CrpudRepository.class);
 
 
@@ -64,6 +66,8 @@ public class CrpudRepositoryTest {
   }
 
   @lombok.Data
+  @lombok.EqualsAndHashCode(callSuper=true)
+  @SuppressWarnings("MissingOverride")
   public static class ChildEntity extends ParentEntity {
     private int age;
   }
