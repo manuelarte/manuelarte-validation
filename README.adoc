@@ -8,16 +8,17 @@ Manuel Doncel Martos <https://github.com/manuelarte[@manuelarte]>
 :url-issues: {url-repo}/issues
 :url-search-issues: {url-repo}/search?type=Issues
 
-
-
 :url-ci-circleci: https://circleci.com/gh/manuelarte/manuelarte-validation
-:url-ci-appveyor: https://ci.appveyor.com/project/asciidoctor/jekyll-asciidoc
 
 ifdef::status[]
-// image:https://img.shields.io/gem/v/jekyll-asciidoc.svg[Latest Release, link={url-maven}]
 image:https://img.shields.io/badge/license-MIT-blue.svg[MIT License, link=#copyright-and-license]
 image:https://circleci.com/gh/manuelarte/manuelarte-validation.svg?style=shield[Build status (Circle CI), link={urc-ci-circleci}]
 image:https://img.shields.io/badge/version-{latest-version}-blue[Release version]
+
+image:https://sonarcloud.io/api/project_badges/measure?project=manuelarte_manuelarte-validation&metric=alert_status[Sonarcloud Status]
+image:https://sonarcloud.io/api/project_badges/measure?project=manuelarte_manuelarte-validation&metric=coverage[SonarCloud Coverage]
+image:https://sonarcloud.io/api/project_badges/measure?project=manuelarte_manuelarte-validation&metric=bugs[SonarCloud Bugs]
+image:https://sonarcloud.io/api/project_badges/measure?project=manuelarte_manuelarte-validation&metric=vulnerabilities[SonarCloud Vulnerabilities]
 endif::[]
 
 :toc: []

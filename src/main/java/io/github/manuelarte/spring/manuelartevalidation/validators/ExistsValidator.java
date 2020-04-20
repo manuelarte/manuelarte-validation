@@ -29,16 +29,22 @@ public class ExistsValidator implements ConstraintValidator<Exists, Object> {
     this.repository = (CrudRepository<Object, Object>) repositories.stream().filter(it -> Objects
         .requireNonNull(ResolvableType.forClass(it.getClass())
             .as(CrudRepository.class).getGeneric(0).resolve()).equals(exists.value()))
-        .findFirst().orElseThrow(() -> new RuntimeException("Can't find the repository for the entity"));
+        .findFirst().orElse(null);
   }
 
   @Override
   public boolean isValid(final Object id, final ConstraintValidatorContext cxt) {
-    Assert.isTrue( id == null
-            || id instanceof Iterable
-            || id.getClass().equals(repositoryIdClass()),
-        String.format("%s is not the expected id type of %s",
-            Optional.ofNullable(id).map(Object::getClass), repositoryIdClass()));
+    if (repository == null) {
+      cxt.buildConstraintViolationWithTemplate("Can't find the repository for the entity");
+      return false;
+    }
+    if ( !(id == null
+        || id instanceof Iterable
+        || id.getClass().equals(repositoryIdClass()))) {
+      cxt.buildConstraintViolationWithTemplate(String.format("%s is not the expected id type of %s",
+          id.getClass(), repositoryIdClass()));
+      return false;
+    }
     return id == null
         || (!(id instanceof Iterable)
         ? repository.existsById(id)
