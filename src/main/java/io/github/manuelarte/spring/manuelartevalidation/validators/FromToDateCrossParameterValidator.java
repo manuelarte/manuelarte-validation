@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @lombok.RequiredArgsConstructor
-public class FromToDateValidator implements ConstraintValidator<FromToDate, Object[]>  {
+public class FromToDateCrossParameterValidator implements ConstraintValidator<FromToDate, Object[]>  {
 
   private FromToType fromToType;
   private int[] paramIndex;
@@ -56,7 +56,7 @@ public class FromToDateValidator implements ConstraintValidator<FromToDate, Obje
     final Object to = fromAndTo.getSecond();
     final int expected = this.fromToType == FromToType.FROM_LOWER_THAN_OR_EQUAL_TO_TO ? 0 : 1;
     if (from instanceof Date || from instanceof Temporal) {
-      return ((Comparable) to).compareTo(from) >= expected;
+      return ((Comparable<Object>) to).compareTo(from) >= expected;
     }
 
     return true;

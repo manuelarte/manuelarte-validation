@@ -4,9 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import io.github.manuelarte.spring.manuelartevalidation.constraints.FromToDate;
-import io.github.manuelarte.spring.manuelartevalidation.validators.FromToDateValidatorTest.TestController;
+import io.github.manuelarte.spring.manuelartevalidation.validators.FromToDateCrossParameterValidatorTest.TestController;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.validation.ConstraintTarget;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -25,13 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.util.NestedServletException;
 
-@SpringBootTest(classes = FromToDateValidatorTest.class)
-@ContextConfiguration(classes = FromToDateValidatorTest.class)
+@SpringBootTest(classes = FromToDateCrossParameterValidatorTest.class)
+@ContextConfiguration(classes = FromToDateCrossParameterValidatorTest.class)
 @Import(TestController.class)
 @EnableWebMvc
 @AutoConfigureMockMvc
 @EnableAutoConfiguration
-class FromToDateValidatorTest {
+class FromToDateCrossParameterValidatorTest {
 
 	@Autowired
 	private MockMvc mvc;
@@ -61,7 +62,7 @@ class FromToDateValidatorTest {
 	public static class TestController {
 
 		@GetMapping
-		@FromToDate
+		@FromToDate(validationAppliesTo = ConstraintTarget.PARAMETERS)
 		public ResponseEntity<Void> findAllById(
 				@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final Date from,
 				@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final Date to) {
