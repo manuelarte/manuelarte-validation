@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import io.github.manuelarte.spring.manuelartevalidation.constraints.FromToDate;
-import io.github.manuelarte.spring.manuelartevalidation.constraints.FromToDate.FromToType;
+import io.github.manuelarte.spring.manuelartevalidation.constraints.FromAndToDate;
+import io.github.manuelarte.spring.manuelartevalidation.constraints.FromAndToDate.FromToType;
 import java.lang.annotation.Annotation;
 import java.time.LocalDate;
 import java.util.Date;
@@ -20,7 +20,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class FromToDateCrossParameterValidatorTest {
+public class FromAndToDateCrossParameterValidatorTest {
 
   @Test
   void testFromAndToAreEqualsDateAndValid() {
@@ -63,7 +63,7 @@ public class FromToDateCrossParameterValidatorTest {
 
   @ParameterizedTest
   @MethodSource("isValidTestDataProvider")
-  void testIsValid(final FromToDate annotation, final Object from, final Object to, boolean expected) {
+  void testIsValid(final FromAndToDate annotation, final Object from, final Object to, boolean expected) {
     final FromToDateCrossParameterValidator fromToDateCrossParameterValidator = new FromToDateCrossParameterValidator();
     fromToDateCrossParameterValidator.initialize(annotation);
     final Object[] value = new Object[]{ from, to };
@@ -79,8 +79,8 @@ public class FromToDateCrossParameterValidatorTest {
     assertFalse(fromToDateCrossParameterValidator.isValid(value, mock(ConstraintValidatorContext.class)));
   }
 
-  private static FromToDate createFromToDate(final FromToType value) {
-    return new FromToDate() {
+  private static FromAndToDate createFromToDate(final FromToType value) {
+    return new FromAndToDate() {
 
       @Override
       public Class<? extends Annotation> annotationType() {
@@ -98,7 +98,7 @@ public class FromToDateCrossParameterValidatorTest {
       }
 
       @Override
-      public int[] paramIndex() {
+      public int[] paramIndexes() {
         return new int[] {0, 1};
       }
 

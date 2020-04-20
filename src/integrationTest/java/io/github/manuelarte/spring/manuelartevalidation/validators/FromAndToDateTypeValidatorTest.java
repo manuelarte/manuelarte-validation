@@ -3,7 +3,7 @@ package io.github.manuelarte.spring.manuelartevalidation.validators;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.manuelarte.spring.manuelartevalidation.constraints.FromToDate;
+import io.github.manuelarte.spring.manuelartevalidation.constraints.FromAndToDate;
 import io.github.manuelarte.spring.manuelartevalidation.constraints.fromto.FromDate;
 import io.github.manuelarte.spring.manuelartevalidation.constraints.fromto.ToDate;
 import java.time.YearMonth;
@@ -15,10 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.validation.annotation.Validated;
 
-@SpringBootTest(classes = FromToDateTypeValidatorTest.class)
-@ContextConfiguration(classes = FromToDateTypeValidatorTest.class)
+@SpringBootTest(classes = FromAndToDateTypeValidatorTest.class)
+@ContextConfiguration(classes = FromAndToDateTypeValidatorTest.class)
 @EnableAutoConfiguration
-class FromToDateTypeValidatorTest {
+class FromAndToDateTypeValidatorTest {
 
 	@Autowired
 	private Validator validator;
@@ -39,8 +39,15 @@ class FromToDateTypeValidatorTest {
 		assertTrue(validator.validate(example).isEmpty());
 	}
 
+	@Test
+	@SuppressWarnings("JavaTimeDefaultTimeZone")
+	void testNullValue() {
+		final EntityExample example = new EntityExample(null, null, null);
+		assertTrue(validator.validate(example).isEmpty());
+	}
+
 	@Validated
-	@FromToDate
+	@FromAndToDate
 	@lombok.AllArgsConstructor
 	@lombok.Data
 	public static class EntityExample {

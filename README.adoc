@@ -106,6 +106,45 @@ public class OneEntityController {
 
 As you can see, when posting new entities, the validation groups default and new will apply.
 
+=== FromAndToDate constraint
+
+This constraint helps to validate two dates.
+
+==== Class Level Example
+
+[source,java]
+----
+@FromAndToDate
+public class EntityExample {
+  @FromDate
+  private final Date from;
+  @ToDate
+  private final Date to;
+  ...
+}
+----
+
+This constraint will check that the field from is lower than (or equal if the configuration of FromAndToDate annotation allows it) to the to parameter
+
+==== Method Level Example
+
+[source,java]
+----
+@FromAndToDate
+public void methodExample(Date from, Date to) {
+  ...
+}
+----
+
+The constraint will check that the parameters from and to match from is before than to.
+By default the constraint will check the 1st and 2nd parameters indexes. In case they are in a different index it should be set like this:
+
+[source,java]
+----
+@FromAndToDate(paramIndexes={x,y})
+----
+where x and y are the indexes of the parameters to be checked.
+
 === CrupRepository
 
 Extension for the Spring Data Repository to allow partial updates.

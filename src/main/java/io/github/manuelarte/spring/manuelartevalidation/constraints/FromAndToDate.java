@@ -1,6 +1,6 @@
 package io.github.manuelarte.spring.manuelartevalidation.constraints;
 
-import io.github.manuelarte.spring.manuelartevalidation.constraints.FromToDate.List;
+import io.github.manuelarte.spring.manuelartevalidation.constraints.FromAndToDate.List;
 import io.github.manuelarte.spring.manuelartevalidation.validators.FromToDateCrossParameterValidator;
 import io.github.manuelarte.spring.manuelartevalidation.validators.FromToDateTypeValidator;
 import java.lang.annotation.Documented;
@@ -18,7 +18,7 @@ import javax.validation.Payload;
 @Target({ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Repeatable(List.class)
-public @interface FromToDate {
+public @interface FromAndToDate {
 
   enum FromToType {
     FROM_LOWER_THAN_TO, FROM_LOWER_THAN_OR_EQUAL_TO_TO
@@ -32,7 +32,7 @@ public @interface FromToDate {
    * The param index from the from and to
    * @return The indexes of the two dates to check
    */
-  int[] paramIndex() default {0, 1};
+  int[] paramIndexes() default {0, 1};
 
   String message() default "From date and to date not being honored";
 
@@ -46,7 +46,7 @@ public @interface FromToDate {
   @Retention(RetentionPolicy.RUNTIME)
   @Documented
   @interface List {
-    FromToDate[] value();
+    FromAndToDate[] value();
   }
 
 }

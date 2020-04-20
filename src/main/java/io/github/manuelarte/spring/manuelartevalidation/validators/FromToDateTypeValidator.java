@@ -1,7 +1,7 @@
 package io.github.manuelarte.spring.manuelartevalidation.validators;
 
-import io.github.manuelarte.spring.manuelartevalidation.constraints.FromToDate;
-import io.github.manuelarte.spring.manuelartevalidation.constraints.FromToDate.FromToType;
+import io.github.manuelarte.spring.manuelartevalidation.constraints.FromAndToDate;
+import io.github.manuelarte.spring.manuelartevalidation.constraints.FromAndToDate.FromToType;
 import io.github.manuelarte.spring.manuelartevalidation.constraints.fromto.FromDate;
 import io.github.manuelarte.spring.manuelartevalidation.constraints.fromto.ToDate;
 import java.lang.reflect.Field;
@@ -14,13 +14,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ReflectionUtils;
 
-public class FromToDateTypeValidator implements ConstraintValidator<FromToDate, Object> {
+public class FromToDateTypeValidator implements ConstraintValidator<FromAndToDate, Object> {
 
   private FromToType fromToType;
   private Predicate<String> allowedIdentifiers;
 
   @Override
-  public void initialize(final FromToDate constraintAnnotation) {
+  public void initialize(final FromAndToDate constraintAnnotation) {
     this.fromToType = constraintAnnotation.value();
     final Predicate<String> predicate;
     if (constraintAnnotation.identifiers().length == 0) {
@@ -82,7 +82,7 @@ public class FromToDateTypeValidator implements ConstraintValidator<FromToDate, 
       to = getValue(entity,fields.get(0));
     }
     final int expected = this.fromToType == FromToType.FROM_LOWER_THAN_OR_EQUAL_TO_TO ? 0 : 1;
-    return to.compareTo(from) >= expected;
+    return from == null || to == null || to.compareTo(from) >= expected;
   }
 
   private boolean isFromDate(final Field field) {
