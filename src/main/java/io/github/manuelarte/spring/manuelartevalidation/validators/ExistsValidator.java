@@ -3,7 +3,6 @@ package io.github.manuelarte.spring.manuelartevalidation.validators;
 import io.github.manuelarte.spring.manuelartevalidation.constraints.Exists;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.StreamSupport;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)

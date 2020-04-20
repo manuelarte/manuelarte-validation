@@ -24,9 +24,8 @@ public class FromToDateValidator implements ConstraintValidator<FromToDate, Obje
 
   @Override
   public void initialize(final FromToDate constraintAnnotation) {
-    final int[] paramIndex = constraintAnnotation.paramIndex();
     this.fromToType = constraintAnnotation.value();
-    this.paramIndex = paramIndex;
+    this.paramIndex = constraintAnnotation.paramIndex();
   }
 
   @Override
