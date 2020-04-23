@@ -1,0 +1,154 @@
+= Manuelarte Validation library
+Manuel Doncel Martos <https://github.com/manuelarte[@manuelarte]>
+// Settings:
+:latest-version: 0.0.2
+:status:
+
+:url-repo: https://github.com/manuelarte/manuelarte-validation
+:url-issues: {url-repo}/issues
+:url-search-issues: {url-repo}/search?type=Issues
+
+:url-ci-circleci: https://circleci.com/gh/manuelarte/manuelarte-validation
+
+ifdef::status[]
+image:https://img.shields.io/badge/license-MIT-blue.svg[MIT License, link=#copyright-and-license]
+image:https://circleci.com/gh/manuelarte/manuelarte-validation.svg?style=shield[Build status (Circle CI), link={urc-ci-circleci}]
+image:https://img.shields.io/badge/version-{latest-version}-blue[Release version]
+
+image:https://sonarcloud.io/api/project_badges/measure?project=manuelarte_manuelarte-validation&metric=alert_status[Sonarcloud Status]
+image:https://sonarcloud.io/api/project_badges/measure?project=manuelarte_manuelarte-validation&metric=coverage[SonarCloud Coverage]
+image:https://sonarcloud.io/api/project_badges/measure?project=manuelarte_manuelarte-validation&metric=bugs[SonarCloud Bugs]
+image:https://sonarcloud.io/api/project_badges/measure?project=manuelarte_manuelarte-validation&metric=vulnerabilities[SonarCloud Vulnerabilities]
+endif::[]
+
+:toc: []
+
+== Overview
+
+Some helpful validations and utilities to be used in your Spring Boot application. Check the features list below.
+
+== Installation
+
+Add the following dependency in your project to start using the features described below.
+
+[source,bash]
+----
+implementation 'org.manuel.spring:manuelarte-validation:{latest-version}'
+----
+
+== Prerequisites
+
+- Java 8 or above
+- Spring Data
+
+== Features
+
+=== Exists Constraint
+
+This constraint can be used to check in a controller if the entity exists before executing the method
+
+==== Prerequisites
+
+- The constraint validations need to be executed, for example annotating your Controller with @Validated
+- The entity/document that is going to be checked needs to have a Repository.
+
+==== Example
+
+[source,java]
+----
+@Validated
+public class DocumentController {
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DocumentEntity> findOne(
+      @PathVariable @Exists(DocumentEntity.class) final String id) {
+        return ResponseEntity.ok(documentService.findOne(id));
+    }
+}
+
+@Repository
+public interface DocumentEntityRepository extends CrudRepository<DocumentEntity, Long> {}
+----
+
+=== Validation Groups
+
+There are three groups added to be used in your dtos, New, Update, PartialUpdate, that can be used
+as validation groups.
+
+==== Example
+
+Imagine that you have an entity that you want to allow to be created, updated and partially updated.
+By using validation groups, we can have the same dto for the different endpoints. Here is an example:
+
+[source,java]
+----
+public class OneEntityDto {
+
+    @Null(groups = {New.class, PartialUpdate.class})
+    @NotNull(groups = Update.class)
+    private final Long id;
+
+    @NotEmpty(groups = {New.class, Update.class})
+    private final String firstName;
+    @NotEmpty(groups = {New.class, Update.class})
+    private final String lastName;
+
+}
+
+@Validated
+public class OneEntityController {
+    @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OneEntity> findOne(
+    @Validated({Default.class, New.class}) @RequestBody final OneEntity newEntity) {
+        return ResponseEntity.ok(entityService.save(newEntity));
+    }
+}
+----
+
+As you can see, when posting new entities, the validation groups default and new will apply.
+
+=== FromAndToDate constraint
+
+This constraint helps to validate two dates.
+
+==== Class Level Example
+
+[source,java]
+----
+@FromAndToDate
+public class EntityExample {
+  @FromDate
+  private final Date from;
+  @ToDate
+  private final Date to;
+  ...
+}
+----
+
+This constraint will check that the field from is lower than (or equal if the configuration of FromAndToDate annotation allows it) to the to parameter
+
+==== Method Level Example
+
+[source,java]
+----
+@FromAndToDate
+public void methodExample(Date from, Date to) {
+  ...
+}
+----
+
+The constraint will check that the parameters from and to match from is before than to.
+By default the constraint will check the 1st and 2nd parameters indexes. In case they are in a different index it should be set like this:
+
+[source,java]
+----
+@FromAndToDate(paramIndexes={x,y})
+----
+where x and y are the indexes of the parameters to be checked.
+
+=== CrupRepository
+
+Extension for the Spring Data Repository to allow partial updates.
+
+==== Prerequisites
+
+- The entity needs to have a single field with @Id attribute

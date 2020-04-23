@@ -1,13 +1,9 @@
-# Java Gradle CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-java/ for more details
-#
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:13.0.2-jdk-buster
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -41,6 +37,9 @@ jobs:
       # run tests!
       - run: gradle test
       - run:
+          name: Analyze on SonarCloud
+          command: gradle build sonarqube
+      - run:
           name: Upload jar
           command: |
             # Skip this for other nodes
@@ -48,3 +47,9 @@ jobs:
               echo -e "nexusPassword=$nexusPassword" > gradle.properties
               ./gradlew clean build uploadArchives -PnexusUsername=$nexusUsername
             fi
+
+workflows:
+  main:
+    jobs:
+      - build:
+          context: SonarCloud

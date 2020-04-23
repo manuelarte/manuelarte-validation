@@ -13,9 +13,9 @@ import io.github.manuelarte.spring.manuelartevalidation.ManuelarteValidationAppl
 import io.github.manuelarte.spring.manuelartevalidation.constraints.Exists;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.validation.ConstraintViolationException;
 import org.bson.types.ObjectId;
@@ -87,7 +87,7 @@ class ManuelarteValidationApplicationTests {
 	void testExistWithSeveralIds() throws Exception {
 		final ParentDocument saved = mongoTemplate.save(new ParentDocument());
 		final ParentDocument saved2 = mongoTemplate.save(new ParentDocument());
-		final String ids = Arrays.asList(saved, saved2).stream().map(it -> it.id.toString())
+		final String ids = Stream.of(saved, saved2).map(it -> it.id)
 				.collect(Collectors.joining(", "));
 		mvc.perform(get("/api/parents?ids={ids}", ids)
 				.contentType(APPLICATION_JSON))
@@ -100,13 +100,20 @@ class ManuelarteValidationApplicationTests {
 		final ParentDocument saved = mongoTemplate.save(new ParentDocument());
 		final ParentDocument saved2 = new ParentDocument();
 		saved2.id = new ObjectId().toString();
-		final String ids = Arrays.asList(saved, saved2).stream().map(it -> it.id)
+		final String ids = Stream.of(saved, saved2).map(it -> it.id)
 				.collect(Collectors.joining(", "));
 		final Exception e = assertThrows(NestedServletException.class,
 				() -> mvc.perform(get("/api/parents?ids={ids}", ids)
 				.contentType(APPLICATION_JSON))
 				.andExpect(status().isBadRequest()));
 		assertEquals(ConstraintViolationException.class, e.getCause().getClass());
+	}
+
+	@Test
+	void testExistWithOneIdInParam() throws Exception {
+		mvc.perform(get("/api/parents/param")
+				.contentType(APPLICATION_JSON))
+				.andExpect(status().isOk());
 	}
 
 	@RestController
@@ -129,13 +136,20 @@ class ManuelarteValidationApplicationTests {
 		public ParentDocument findOne(@PathVariable @Exists(ParentDocument.class) final String id) {
 			return mongoTemplate.findById(id, ParentDocument.class);
 		}
+
+		@GetMapping("/param")
+		public ParentDocument findOneByParam(
+				@RequestParam(required = false) @Exists(ParentDocument.class) final String id) {
+			return null;
+		}
+
 	}
 
 	@Component
+	@lombok.RequiredArgsConstructor
 	public static class ParentRepository implements CrudRepository<ParentDocument, String>{
 
-		@Autowired
-		private MongoTemplate mongoTemplate;
+		private final MongoTemplate mongoTemplate;
 
 		@Override
 		public <S extends ParentDocument> S save(S entity) {
@@ -164,10 +178,10 @@ class ManuelarteValidationApplicationTests {
 
 		@Override
 		public Iterable<ParentDocument> findAllById(final Iterable<String> ids) {
-			final List<String> listIds = StreamSupport.stream(
-					ids.spliterator(), false).collect(Collectors.toList());
+			final Object[] array = StreamSupport.stream(
+					ids.spliterator(), false).toArray(Object[]::new);
 			return mongoTemplate.find(
-					new Query(Criteria.where("_id").in(listIds.toArray(new String[listIds.size()]))),
+					new Query(Criteria.where("_id").in(array)),
 					ParentDocument.class);
 		}
 
@@ -197,31 +211,13 @@ class ManuelarteValidationApplicationTests {
 	}
 
 	@Document
+	@lombok.EqualsAndHashCode
+	@lombok.Data
 	public static class ParentDocument {
 
 		@Id
 		private String id;
 
-		public String getId() {
-			return id;
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) {
-				return true;
-			}
-			if (o == null || getClass() != o.getClass()) {
-				return false;
-			}
-			ParentDocument that = (ParentDocument) o;
-			return Objects.equals(id, that.id);
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(id);
-		}
 	}
 
 }

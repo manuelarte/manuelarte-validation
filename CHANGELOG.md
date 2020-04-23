@@ -8,10 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added Exists constraint
-- Added New, Update, PartialUpdate constraint groups
-- Added Crpud repository, that allows partial updates
+- Fixing bug when @Exists input parameter is null
+- Added [error prone](https://errorprone.info/)
+- Added Sonarqube
+- Added @FromToDate
 
 ### Changed
 
 ### Removed
+
+## [0.0.1] - 2020/04/17
+
+### Added
+
+- Added Exists constraint
+- Added New, Update, PartialUpdate constraint groups
+- Added Crpud repository, that allows partial updates
