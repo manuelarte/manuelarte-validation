@@ -106,7 +106,7 @@ public class OneEntityController {
 
 As you can see, when posting new entities, the validation groups default and new will apply.
 
-=== FromAndToDate constraint
+=== FromAndToDate Constraint
 
 This constraint helps to validate two dates.
 
