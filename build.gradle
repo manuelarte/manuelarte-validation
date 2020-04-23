@@ -1,3 +1,5 @@
+import io.github.manuelarte.spring.ProjectVersion
+
 buildscript {
 	repositories {
 		jcenter()
@@ -21,8 +23,19 @@ plugins {
 
 apply plugin: 'com.bmuschko.nexus'
 
+ext.versionFile = file('version.properties')
+ext.gitDetails = versionDetails()
+
+ProjectVersion readVersion() {
+	logger.quiet 'Reading version file.'
+	if (!versionFile.exists()) {
+		throw new GradleException("Required version file does not exist: $versionFile.canonicalPath")
+	}
+	ProjectVersion.readVersion(versionFile, gitDetails)
+}
+
 group = 'io.github.manuelarte.spring'
-version = '0.0.2-SNAPSHOT'
+version = readVersion()
 sourceCompatibility = '1.8'
 
 repositories {
