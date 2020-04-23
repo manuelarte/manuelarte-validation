@@ -1,7 +1,7 @@
 = Manuelarte Validation library
 Manuel Doncel Martos <https://github.com/manuelarte[@manuelarte]>
 // Settings:
-:latest-version: 0.0.1
+:latest-version: 0.0.2
 :status:
 
 :url-repo: https://github.com/manuelarte/manuelarte-validation
@@ -33,7 +33,7 @@ Add the following dependency in your project to start using the features describ
 
 [source,bash]
 ----
-implementation 'org.manuel.spring:manuelarte-validation:{latest-version}
+implementation 'org.manuel.spring:manuelarte-validation:{latest-version}'
 ----
 
 == Prerequisites
