@@ -33,7 +33,7 @@ Add the following dependency in your project to start using the features describ
 
 [source,bash]
 ----
-implementation 'org.manuel.spring:manuelarte-validation:{latest-version}'
+implementation 'io.github.manuelarte.spring:manuelarte-validation:{latest-version}'
 ----
 
 == Prerequisites
