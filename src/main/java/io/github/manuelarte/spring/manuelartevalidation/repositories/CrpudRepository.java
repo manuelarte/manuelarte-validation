@@ -3,7 +3,6 @@ package io.github.manuelarte.spring.manuelartevalidation.repositories;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -13,7 +12,7 @@ import org.springframework.util.ReflectionUtils;
  * {@inheritDoc}
  */
 @NoRepositoryBean
-public interface CrpudRepository<T, ID> extends CrudRepository<T, ID> {
+public interface CrpudRepository<T, Id> extends CrudRepository<T, Id> {
 
   /**
    * To partially update an entity. Updates the non-null fields of the previously saved entity.
@@ -23,9 +22,9 @@ public interface CrpudRepository<T, ID> extends CrudRepository<T, ID> {
    *                      The entity needs to have an @Id annotation in the field
    * @return The entity updated with the non-null partial entity values
    */
-  default T partialSave(ID id, T partialEntity) {
+  default T partialSave(Id id, T partialEntity) {
     final List<Field> allFields = new ArrayList<>();
-    ReflectionUtils.doWithFields(partialEntity.getClass(), it -> allFields.add(it));
+    ReflectionUtils.doWithFields(partialEntity.getClass(), allFields::add);
     final T saved = findById(id)
         .orElseThrow(() -> new RuntimeException(String.format("Entity with id %s not found", id)));
     BeanUtils.copyProperties(partialEntity, saved, allFields.stream()

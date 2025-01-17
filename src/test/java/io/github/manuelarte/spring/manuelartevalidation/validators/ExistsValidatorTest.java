@@ -1,7 +1,6 @@
 package io.github.manuelarte.spring.manuelartevalidation.validators;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -18,7 +17,7 @@ import javax.validation.groups.Default;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.repository.CrudRepository;
 
-public class ExistsValidatorTest {
+class ExistsValidatorTest {
 
   @Test
   void testIsValidStringId() {
@@ -120,6 +119,11 @@ public class ExistsValidatorTest {
 
     @Override
     public void delete(Object entity) {
+
+    }
+
+    @Override
+    public void deleteAllById(Iterable<? extends String> strings) {
 
     }
 

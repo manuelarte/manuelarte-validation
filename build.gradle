@@ -2,7 +2,7 @@ import io.github.manuelarte.spring.ProjectVersion
 
 buildscript {
 	repositories {
-		jcenter()
+		mavenCentral()
 	}
 	dependencies {
 		classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
@@ -69,30 +69,30 @@ dependencies {
 	errorprone("com.google.errorprone:error_prone_core:2.3.4")
 
 	implementation 'javax.validation:validation-api:2.0.1.Final'
-	compileOnly 'org.springframework.boot:spring-boot-starter:2.2.6.RELEASE'
-	compileOnly 'org.springframework.boot:spring-boot-starter-data-mongodb:2.2.6.RELEASE'
+	compileOnly 'org.springframework.boot:spring-boot-starter:2.7.18'
+	compileOnly 'org.springframework.boot:spring-boot-starter-data-mongodb:2.7.18'
 	compileOnly 'org.projectlombok:lombok:1.18.2'
 	annotationProcessor 'org.projectlombok:lombok:1.18.2'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter:2.2.6.RELEASE'
-	testImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.2.6.RELEASE'
-	testImplementation 'org.json:json:20190722'
+	testImplementation 'org.springframework.boot:spring-boot-starter:2.7.18'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.7.18'
+	testImplementation 'org.json:json:20231013'
 	testImplementation 'org.mockito:mockito-junit-jupiter:3.3.3'
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
-	testImplementation 'org.mockito:mockito-core:3.3.3'
-	testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.1.13'
+	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
+	testImplementation 'org.mockito:mockito-core:5.15.2'
+	testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.18.1'
 	testCompileOnly 'org.projectlombok:lombok:1.18.2'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.2'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
 
-	integrationTestImplementation('org.springframework.boot:spring-boot-starter-test:2.2.6.RELEASE') {
+	integrationTestImplementation('org.springframework.boot:spring-boot-starter-test:2.7.18') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-	integrationTestImplementation 'org.springframework.boot:spring-boot-starter:2.2.6.RELEASE'
-	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-web:2.2.6.RELEASE'
-	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.2.6.RELEASE'
-	integrationTestImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.0'
+	integrationTestImplementation 'org.springframework.boot:spring-boot-starter:2.7.18'
+	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-web:2.7.18'
+	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.7.18'
+	integrationTestImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.18.1'
 }
 
 test {

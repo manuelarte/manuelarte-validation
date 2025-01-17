@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import io.github.manuelarte.spring.manuelartevalidation.ManuelarteValidationApplicationTests.ParentDocumentController;
 import io.github.manuelarte.spring.manuelartevalidation.ManuelarteValidationApplicationTests.ParentRepository;
 import io.github.manuelarte.spring.manuelartevalidation.constraints.Exists;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -196,6 +195,11 @@ class ManuelarteValidationApplicationTests {
 
 		@Override
 		public void delete(ParentDocument entity) {
+
+		}
+
+		@Override
+		public void deleteAllById(Iterable<? extends String> strings) {
 
 		}
 
