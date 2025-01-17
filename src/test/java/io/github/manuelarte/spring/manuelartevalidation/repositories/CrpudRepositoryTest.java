@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
 
-public class CrpudRepositoryTest {
+class CrpudRepositoryTest {
 
   @SuppressWarnings("unchecked")
   private final CrpudRepository<ParentEntity, Long> parentRepository = spy(CrpudRepository.class);

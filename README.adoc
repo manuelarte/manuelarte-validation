@@ -137,7 +137,7 @@ public void methodExample(Date from, Date to) {
 ----
 
 The constraint will check that the parameters from and to match from is before than to.
-By default the constraint will check the 1st and 2nd parameters indexes. In case they are in a different index it should be set like this:
+By default, the constraint will check the 1st and 2nd parameters indexes. In case they are in a different index it should be set like this:
 
 [source,java]
 ----
