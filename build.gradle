@@ -18,7 +18,7 @@ plugins {
 	id 'com.palantir.git-version' version '3.1.0'
 	id 'maven-publish'
 	id 'signing'
-	id 'io.codearte.nexus-staging' version '0.21.2'
+	id 'io.codearte.nexus-staging' version '0.30.0'
 }
 
 apply plugin: 'com.bmuschko.nexus'
