@@ -66,7 +66,7 @@ sonarqube {
 }
 
 dependencies {
-	errorprone("com.google.errorprone:error_prone_core:2.3.4")
+	errorprone("com.google.errorprone:error_prone_core:2.36.0")
 
 	implementation 'javax.validation:validation-api:2.0.1.Final'
 	compileOnly 'org.springframework.boot:spring-boot-starter:3.4.2'
