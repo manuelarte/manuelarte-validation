@@ -71,8 +71,8 @@ dependencies {
 	implementation 'javax.validation:validation-api:2.0.1.Final'
 	compileOnly 'org.springframework.boot:spring-boot-starter:3.4.2'
 	compileOnly 'org.springframework.boot:spring-boot-starter-data-mongodb:3.4.1'
-	compileOnly 'org.projectlombok:lombok:1.18.2'
-	annotationProcessor 'org.projectlombok:lombok:1.18.2'
+	compileOnly 'org.projectlombok:lombok:1.18.36'
+	annotationProcessor 'org.projectlombok:lombok:1.18.36'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter:3.4.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb:3.4.1'
@@ -82,8 +82,8 @@ dependencies {
 	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
 	testImplementation 'org.mockito:mockito-core:5.15.2'
 	testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.18.1'
-	testCompileOnly 'org.projectlombok:lombok:1.18.2'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.2'
+	testCompileOnly 'org.projectlombok:lombok:1.18.36'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
 
 	integrationTestImplementation('org.springframework.boot:spring-boot-starter-test:3.4.1') {
