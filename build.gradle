@@ -77,7 +77,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter:3.4.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb:3.4.2'
 	testImplementation 'org.json:json:20250107'
-	testImplementation 'org.mockito:mockito-junit-jupiter:3.3.3'
+	testImplementation 'org.mockito:mockito-junit-jupiter:5.15.2'
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
 	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
 	testImplementation 'org.mockito:mockito-core:5.15.2'
