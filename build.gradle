@@ -86,7 +86,7 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
 
-	integrationTestImplementation('org.springframework.boot:spring-boot-starter-test:3.4.2') {
+	integrationTestImplementation('org.springframework.boot:spring-boot-starter-test:3.4.3') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	integrationTestImplementation 'org.springframework.boot:spring-boot-starter:3.4.2'
