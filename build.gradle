@@ -90,7 +90,7 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	integrationTestImplementation 'org.springframework.boot:spring-boot-starter:3.4.2'
-	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-web:3.4.2'
+	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-web:3.4.3'
 	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb:3.4.2'
 	integrationTestImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.18.1'
 }
